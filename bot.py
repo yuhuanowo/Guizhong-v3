@@ -21,6 +21,7 @@ from discord.ext.commands import Bot, Context
 
 import exceptions
 
+#系統找不到config.json
 if not os.path.isfile(f"{os.path.realpath(os.path.dirname(__file__))}/config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
@@ -70,17 +71,18 @@ If you want to use prefix commands, make sure to also enable the intent below in
 """
 # intents.message_content = True
 
+# 創建bot
 bot = Bot(
     command_prefix=commands.when_mentioned_or(config["prefix"]),
     intents=intents,
     help_command=None,
 )
 
-# Setup both of the loggers
+#設置紀錄器
 
-
+# 定義自訂的日誌格式化類別 LoggingFormatter
 class LoggingFormatter(logging.Formatter):
-    # Colors
+    # 顏色
     black = "\x1b[30m"
     red = "\x1b[31m"
     green = "\x1b[32m"
@@ -88,30 +90,32 @@ class LoggingFormatter(logging.Formatter):
     blue = "\x1b[34m"
     gray = "\x1b[38m"
     # Styles
-    reset = "\x1b[0m"
-    bold = "\x1b[1m"
+    reset = "\x1b[0m" # 重置樣式
+    bold = "\x1b[1m"  # 加粗樣式
 
+    # 定義不同日誌級別與對應顏色的映射關係
     COLORS = {
-        logging.DEBUG: gray + bold,
-        logging.INFO: blue + bold,
-        logging.WARNING: yellow + bold,
-        logging.ERROR: red,
-        logging.CRITICAL: red + bold,
+        logging.DEBUG: gray + bold, # DEBUG 級別的日誌使用灰色加粗樣式
+        logging.INFO: blue + bold, # INFO 級別的日誌使用藍色加粗樣式
+        logging.WARNING: yellow + bold, # WARNING 級別的日誌使用黃色加粗樣式
+        logging.ERROR: red,  # ERROR 級別的日誌使用紅色樣式
+        logging.CRITICAL: red + bold, # CRITICAL 級別的日誌使用紅色加粗樣式
     }
 
+    # 覆寫 format 方法，用於格式化日誌紀錄
     def format(self, record):
-        log_color = self.COLORS[record.levelno]
+        log_color = self.COLORS[record.levelno] # 根據紀錄的日誌級別獲取對應的顏色
         format = "(black){asctime}(reset) (levelcolor){levelname:<8}(reset) (green){name}(reset) {message}"
-        format = format.replace("(black)", self.black + self.bold)
-        format = format.replace("(reset)", self.reset)
-        format = format.replace("(levelcolor)", log_color)
-        format = format.replace("(green)", self.green + self.bold)
-        formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S", style="{")
-        return formatter.format(record)
+        format = format.replace("(black)", self.black + self.bold) # 將 (black) 替換為黑色加粗樣式
+        format = format.replace("(reset)", self.reset) # 將 (reset) 替換為重置樣式
+        format = format.replace("(levelcolor)", log_color)  # 將 (levelcolor) 替換為紀錄的顏色
+        format = format.replace("(green)", self.green + self.bold) # 將 (green) 替換為綠色加粗樣式
+        formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S", style="{")  # 創建日誌格式化物件
+        return formatter.format(record)  # 格式化日誌紀錄
 
-
+# 創建名為 "discord_bot" 的 logger 物件
 logger = logging.getLogger("discord_bot")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO) # 設定日誌
 
 # Console handler
 console_handler = logging.StreamHandler()
