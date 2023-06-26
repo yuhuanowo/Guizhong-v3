@@ -117,20 +117,20 @@ class LoggingFormatter(logging.Formatter):
 logger = logging.getLogger("discord_bot")
 logger.setLevel(logging.INFO) # 設定日誌
 
-# Console handler
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(LoggingFormatter())
-# File handler
-file_handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
+# Console handler 控制台處理器
+console_handler = logging.StreamHandler() # 創建控制台處理器
+console_handler.setFormatter(LoggingFormatter()) # 設定日誌格式化器為自訂的 LoggingFormatter
+# File handler 檔案處理器
+file_handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w") # 創建檔案處理器，將日誌寫入名為 "discord.log" 的檔案中
 file_handler_formatter = logging.Formatter(
     "[{asctime}] [{levelname:<8}] {name}: {message}", "%Y-%m-%d %H:%M:%S", style="{"
-)
-file_handler.setFormatter(file_handler_formatter)
+) # 創建檔案處理器的日誌格式化器
+file_handler.setFormatter(file_handler_formatter) # 設定檔案處理器的日誌格式化器
 
-# Add the handlers
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
-bot.logger = logger
+# Add the handlers 加入處理器到 logger
+logger.addHandler(console_handler) # 將控制台處理器加入到 logger
+logger.addHandler(file_handler) # 將檔案處理器加入到 logger
+bot.logger = logger # 將 logger 分配給 bot 物件的 logger 屬性
 
 
 async def init_db():
@@ -140,8 +140,8 @@ async def init_db():
         with open(
             f"{os.path.realpath(os.path.dirname(__file__))}/database/schema.sql"
         ) as file:
-            await db.executescript(file.read())
-        await db.commit()
+            await db.executescript(file.read()) # 執行 SQL 腳本
+        await db.commit() # 提交事務
 
 
 """
