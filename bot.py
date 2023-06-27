@@ -125,6 +125,7 @@ async def on_ready() -> None:
     bot.logger.info(f"discord.py API version: {discord.__version__}")
     bot.logger.info(f"Python version: {platform.python_version()}")
     bot.logger.info(f"Running on: {platform.system()} {platform.release()} ({os.name})")
+    bot.logger.info(f"Owner: {config['owner']}")
     bot.logger.info("-------------------")
     status_task.start()
     if config["sync_commands_globally"]:
