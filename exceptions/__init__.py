@@ -8,10 +8,10 @@ Version: 5.5.0
 
 from discord.ext import commands
 
-
+#客製化檢查 (Custom Checks) 用於檢查是否為擁有者的裝飾器函式
 class UserBlacklisted(commands.CheckFailure):
     """
-    Thrown when a user is attempting something, but is blacklisted.
+    當用戶嘗試某些操作但被列入黑名單時拋出.
     """
 
     def __init__(self, message="User is blacklisted!"):
@@ -21,7 +21,7 @@ class UserBlacklisted(commands.CheckFailure):
 
 class UserNotOwner(commands.CheckFailure):
     """
-    Thrown when a user is attempting something, but is not an owner of the bot.
+    當用戶嘗試某些操作但不是機器人的所有者時拋出.
     """
 
     def __init__(self, message="User is not an owner of the bot!"):
