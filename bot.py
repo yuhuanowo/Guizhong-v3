@@ -271,7 +271,7 @@ async def load_cogs() -> None:
                 exception = f"{type(e).__name__}: {e}"
                 bot.logger.error(f"Failed to load extension {extension}\n{exception}")
 
-# 執行bot
+# 執行bot (bot.run)
 asyncio.run(init_db())
 asyncio.run(load_cogs())
 bot.run(config["token"])
