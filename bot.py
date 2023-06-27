@@ -29,7 +29,7 @@ else:
         config = json.load(file)
 
 #設置bot的intents
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 
 # 創建bot
 bot = Bot(
@@ -137,8 +137,13 @@ async def status_task() -> None:
     """
     設置bot的遊戲狀態任務.
     """
-    statuses = ["with you!", "with Krypton!", "with humans!"]
-    await bot.change_presence(activity=discord.Game(random.choice(statuses)))
+    #顯示
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.listening,
+            name=f"歸終在 {len(bot.guilds)} 個伺服器中!",
+        )
+    )
 
 # on_message: 當有訊息時執行
 @bot.event
