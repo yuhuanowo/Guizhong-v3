@@ -23,7 +23,7 @@ class General(commands.Cog, name="general"):
         self.bot = bot
 
     @commands.hybrid_command(
-        name="help", description="List all commands the bot has loaded."
+        name="help", description="列出機器人已加載的所有命令."
     )
     @checks.not_blacklisted()
     async def help(self, context: Context) -> None:
