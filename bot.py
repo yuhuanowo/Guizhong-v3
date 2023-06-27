@@ -28,48 +28,8 @@ else:
     with open(f"{os.path.realpath(os.path.dirname(__file__))}/config.json") as file:
         config = json.load(file)
 
-"""	
-Setup bot intents (events restrictions)
-For more information about intents, please go to the following websites:
-https://discordpy.readthedocs.io/en/latest/intents.html
-https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents
-
-
-Default Intents:
-intents.bans = True
-intents.dm_messages = True
-intents.dm_reactions = True
-intents.dm_typing = True
-intents.emojis = True
-intents.emojis_and_stickers = True
-intents.guild_messages = True
-intents.guild_reactions = True
-intents.guild_scheduled_events = True
-intents.guild_typing = True
-intents.guilds = True
-intents.integrations = True
-intents.invites = True
-intents.messages = True # `message_content` is required to get the content of the messages
-intents.reactions = True
-intents.typing = True
-intents.voice_states = True
-intents.webhooks = True
-
-Privileged Intents (Needs to be enabled on developer portal of Discord), please use them only if you need them:
-intents.members = True
-intents.message_content = True
-intents.presences = True
-"""
-
+#設置bot的intents
 intents = discord.Intents.default()
-
-"""
-Uncomment this if you want to use prefix (normal) commands.
-It is recommended to use slash commands and therefore not use prefix commands.
-
-If you want to use prefix commands, make sure to also enable the intent below in the Discord developer portal.
-"""
-# intents.message_content = True
 
 # 創建bot
 bot = Bot(
@@ -133,6 +93,7 @@ logger.addHandler(file_handler) # 將檔案處理器加入到 logger
 bot.logger = logger # 將 logger 分配給 bot 物件的 logger 屬性
 
 
+# 創建資料庫
 async def init_db():
     async with aiosqlite.connect(
         f"{os.path.realpath(os.path.dirname(__file__))}/database/database.db"
@@ -145,19 +106,20 @@ async def init_db():
 
 
 """
-Create a bot variable to access the config file in cogs so that you don't need to import it every time.
-
-The config is available using the following code:
+創建一個 bot 變量來訪問 cogs 中的配置文件，這樣您就不需要每次都導入它。
+該配置可使用以下代碼獲得：
 - bot.config # In this file
 - self.bot.config # In cogs
 """
 bot.config = config
 
 
+# 設置bot的事件 (on_ready, on_message, on_command_error, on_command_completion) 和 tasks (status_task) 事件 
+# on_ready: 當bot準備好時執行
 @bot.event
 async def on_ready() -> None:
     """
-    The code in this event is executed when the bot is ready.
+    當機器人準備好時執行此事件中的代碼.
     """
     bot.logger.info(f"Logged in as {bot.user.name}")
     bot.logger.info(f"discord.py API version: {discord.__version__}")
@@ -169,34 +131,34 @@ async def on_ready() -> None:
         bot.logger.info("Syncing commands globally...")
         await bot.tree.sync()
 
-
+# status_task: 設置bot的狀態
 @tasks.loop(minutes=1.0)
 async def status_task() -> None:
     """
-    Setup the game status task of the bot.
+    設置bot的遊戲狀態任務.
     """
     statuses = ["with you!", "with Krypton!", "with humans!"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
-
+# on_message: 當有訊息時執行
 @bot.event
 async def on_message(message: discord.Message) -> None:
     """
-    The code in this event is executed every time someone sends a message, with or without the prefix
+    每次有人發送消息時都會執行此事件中的代碼，無論是否帶有前綴
 
-    :param message: The message that was sent.
+    :param message: 已發送的消息.
     """
     if message.author == bot.user or message.author.bot:
         return
     await bot.process_commands(message)
 
-
+# on_command_completion: 當有指令完成時執行
 @bot.event
 async def on_command_completion(context: Context) -> None:
     """
-    The code in this event is executed every time a normal command has been *successfully* executed.
+    每次“成功”執行正常命令時都會執行此事件中的代碼。
 
-    :param context: The context of the command that has been executed.
+    :param context: 已執行命令的上下文.
     """
     full_command_name = context.command.qualified_name
     split = full_command_name.split(" ")
@@ -210,14 +172,14 @@ async def on_command_completion(context: Context) -> None:
             f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs"
         )
 
-
+# on_command_error: 當有指令錯誤時執行
 @bot.event
 async def on_command_error(context: Context, error) -> None:
     """
-    The code in this event is executed every time a normal valid command catches an error.
+    每次正常的有效命令捕獲錯誤時都會執行此事件中的代碼.
 
-    :param context: The context of the normal command that failed executing.
-    :param error: The error that has been faced.
+    :param context: 執行失敗的正常命令的上下文.
+    :param error: 所遇到的錯誤。
     """
     if isinstance(error, commands.CommandOnCooldown):
         minutes, seconds = divmod(error.retry_after, 60)
@@ -230,8 +192,8 @@ async def on_command_error(context: Context, error) -> None:
         await context.send(embed=embed)
     elif isinstance(error, exceptions.UserBlacklisted):
         """
-        The code here will only execute if the error is an instance of 'UserBlacklisted', which can occur when using
-        the @checks.not_blacklisted() check in your command, or you can raise the error by yourself.
+        僅當錯誤是“UserBlacklisted”的實例時才會執行此處的代碼,這可能在使用時發生
+        @checks.not_blacklisted() 檢查你的命令，或者你可以自己提出錯誤.
         """
         embed = discord.Embed(
             description="You are blacklisted from using the bot!", color=0xE02B2B
@@ -247,7 +209,7 @@ async def on_command_error(context: Context, error) -> None:
             )
     elif isinstance(error, exceptions.UserNotOwner):
         """
-        Same as above, just for the @checks.is_owner() check.
+        與上面相同，僅用於 @checks.is_owner() 檢查.
         """
         embed = discord.Embed(
             description="You are not the owner of the bot!", color=0xE02B2B
@@ -280,7 +242,7 @@ async def on_command_error(context: Context, error) -> None:
     elif isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(
             title="Error!",
-            # We need to capitalize because the command arguments have no capital letter in the code.
+            # 我們需要大寫，因為命令參數在代碼中沒有大寫字母。
             description=str(error).capitalize(),
             color=0xE02B2B,
         )
@@ -288,10 +250,10 @@ async def on_command_error(context: Context, error) -> None:
     else:
         raise error
 
-
+# 載入cogs
 async def load_cogs() -> None:
     """
-    The code in this function is executed whenever the bot will start.
+    每當機器人啟動時都會執行此函數中的代碼.
     """
     for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
         if file.endswith(".py"):
@@ -303,7 +265,7 @@ async def load_cogs() -> None:
                 exception = f"{type(e).__name__}: {e}"
                 bot.logger.error(f"Failed to load extension {extension}\n{exception}")
 
-
+# 執行bot
 asyncio.run(init_db())
 asyncio.run(load_cogs())
 bot.run(config["token"])
