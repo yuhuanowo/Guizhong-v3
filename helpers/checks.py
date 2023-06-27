@@ -45,4 +45,4 @@ def not_blacklisted() -> Callable[[T], T]:
             raise UserBlacklisted
         return True
 
-    return commands.check(predicate) # 回傳檢查函式
+    return commands.check(predicate) # 回傳檢查函式 # noqa: E501
