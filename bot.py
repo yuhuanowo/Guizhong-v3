@@ -165,11 +165,11 @@ async def on_command_completion(context: Context) -> None:
     executed_command = str(split[0])
     if context.guild is not None:
         bot.logger.info(
-            f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})"
+            f"執行 {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})"
         )
     else:
         bot.logger.info(
-            f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs"
+            f"執行 {executed_command} command by {context.author} (ID: {context.author.id}) in DMs"
         )
 
 # on_command_error: 當有指令錯誤時執行
@@ -186,7 +186,7 @@ async def on_command_error(context: Context, error) -> None:
         hours, minutes = divmod(minutes, 60)
         hours = hours % 24
         embed = discord.Embed(
-            description=f"**Please slow down** - You can use this command again in {f'{round(hours)} hours' if round(hours) > 0 else ''} {f'{round(minutes)} minutes' if round(minutes) > 0 else ''} {f'{round(seconds)} seconds' if round(seconds) > 0 else ''}.",
+            description=f"**執行指令過於頻繁** - 您可以再 {f'{round(hours)} 小時' if round(hours) > 0 else ''} {f'{round(minutes)} 分' if round(minutes) > 0 else ''} {f'{round(seconds)} 秒' if round(seconds) > 0 else ''}後嘗試.",
             color=0xE02B2B,
         )
         await context.send(embed=embed)
@@ -196,46 +196,46 @@ async def on_command_error(context: Context, error) -> None:
         @checks.not_blacklisted() 檢查你的命令，或者你可以自己提出錯誤.
         """
         embed = discord.Embed(
-            description="You are blacklisted from using the bot!", color=0xE02B2B
+            description="您已被列入該機器人的黑名單!", color=0xE02B2B
         )
         await context.send(embed=embed)
         if context.guild:
             bot.logger.warning(
-                f"{context.author} (ID: {context.author.id}) tried to execute a command in the guild {context.guild.name} (ID: {context.guild.id}), but the user is blacklisted from using the bot."
+                f"{context.author} (ID: {context.author.id}) 嘗試在公會中執行命令 {context.guild.name} (ID: {context.guild.id}), 但用戶已被列入機器人的黑名單."
             )
         else:
             bot.logger.warning(
-                f"{context.author} (ID: {context.author.id}) tried to execute a command in the bot's DMs, but the user is blacklisted from using the bot."
+                f"{context.author} (ID: {context.author.id}) 嘗試在機器人的 DM 中執行命令，但用戶已被列入使用機器人的黑名單."
             )
     elif isinstance(error, exceptions.UserNotOwner):
         """
         與上面相同，僅用於 @checks.is_owner() 檢查.
         """
         embed = discord.Embed(
-            description="You are not the owner of the bot!", color=0xE02B2B
+            description="您不是該bot的所有者!", color=0xE02B2B
         )
         await context.send(embed=embed)
         if context.guild:
             bot.logger.warning(
-                f"{context.author} (ID: {context.author.id}) tried to execute an owner only command in the guild {context.guild.name} (ID: {context.guild.id}), but the user is not an owner of the bot."
+                f"{context.author} (ID: {context.author.id}) 嘗試在公會中執行僅限所有者的命令 {context.guild.name} (ID: {context.guild.id}),但用戶不是機器人的所有者."
             )
         else:
             bot.logger.warning(
-                f"{context.author} (ID: {context.author.id}) tried to execute an owner only command in the bot's DMs, but the user is not an owner of the bot."
+                f"{context.author} (ID: {context.author.id}) 嘗試在機器人的 DM 中執行僅限所有者的命令，但用戶不是機器人的所有者。"
             )
     elif isinstance(error, commands.MissingPermissions):
         embed = discord.Embed(
-            description="You are missing the permission(s) `"
+            description="你缺少必要權限"
             + ", ".join(error.missing_permissions)
-            + "` to execute this command!",
+            + "` 來執行這個命令！",
             color=0xE02B2B,
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.BotMissingPermissions):
         embed = discord.Embed(
-            description="I am missing the permission(s) `"
+            description="我缺少權限"
             + ", ".join(error.missing_permissions)
-            + "` to fully perform this command!",
+            + "` 來執行此命令！",
             color=0xE02B2B,
         )
         await context.send(embed=embed)
