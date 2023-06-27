@@ -14,7 +14,7 @@ class UserBlacklisted(commands.CheckFailure):
     當用戶嘗試某些操作但被列入黑名單時拋出.
     """
 
-    def __init__(self, message="User is blacklisted!"):
+    def __init__(self, message="您已被列入黑名單！"):
         self.message = message
         super().__init__(self.message)
 
@@ -24,6 +24,6 @@ class UserNotOwner(commands.CheckFailure):
     當用戶嘗試某些操作但不是機器人的所有者時拋出.
     """
 
-    def __init__(self, message="User is not an owner of the bot!"):
+    def __init__(self, message="您不是歸終的所有者!"):
         self.message = message
         super().__init__(self.message)
