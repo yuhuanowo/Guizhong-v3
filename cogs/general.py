@@ -31,7 +31,7 @@ class General(commands.Cog, name="general"):
         #對使用指令的使用者說嗨
         embed = discord.Embed(
             title=(f"嗨，{context.author.display_name}!  我是歸終～ "), description="我是歸終，一個可愛的機器人!\n 我們正在努力轉移部分功能的指令到斜線指令\n 可以使用 /help 指令查看斜線的使用方法\n 使用我的服務即表示你已同意我的 隱私權聲明 及 服務條款", color=0x9C84EF)
-        #dropdown 
+        #下拉選單 
         dropdown = discord.ui.Select(
             placeholder="請選擇",
             min_values=1,
@@ -43,7 +43,7 @@ class General(commands.Cog, name="general"):
                 discord.SelectOption(label="其他指令", description="其他指令", emoji="📦"),
             ],
         )
-        #dropdown respones
+        #下拉回复
         async def select_callback(interaction: discord.Interaction):
             selected_option = interaction.data["values"][0]            
             if selected_option == "常用指令":
@@ -141,7 +141,7 @@ class General(commands.Cog, name="general"):
             )
         await context.send(embed=embed)
     """
-    
+
     @commands.hybrid_command(
         name="botinfo",
         description="Get some useful (or not) information about the bot.",
