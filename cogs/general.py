@@ -23,14 +23,111 @@ class General(commands.Cog, name="general"):
         self.bot = bot
 
     @commands.hybrid_command(
-        name="help", description="列出機器人已加載的所有命令."
+        name="help", description="你想來認識歸終嗎.?"
     )
     @checks.not_blacklisted()
     async def help(self, context: Context) -> None:
-        prefix = self.bot.config["prefix"]
+        prefix = self.bot.config["prefix"]      
+        #對使用指令的使用者說嗨
         embed = discord.Embed(
-            title="Help", description="List of available commands:", color=0x9C84EF
+            title=(f"嗨，{context.author.display_name}!  我是歸終～ "), description="我是歸終，一個可愛的機器人!\n 我們正在努力轉移部分功能的指令到斜線指令\n 可以使用 /help 指令查看斜線的使用方法\n 使用我的服務即表示你已同意我的 隱私權聲明 及 服務條款", color=0x9C84EF)
+        #dropdown 
+        dropdown = discord.ui.Select(
+            placeholder="請選擇",
+            min_values=1,
+            max_values=None,
+            options=[
+                discord.SelectOption(label="常用指令", description="常用指令", emoji="📜"),
+                discord.SelectOption(label="娛樂指令", description="娛樂指令", emoji="🎮"),
+                discord.SelectOption(label="管理指令", description="管理指令", emoji="🔨"),
+                discord.SelectOption(label="其他指令", description="其他指令", emoji="📦"),
+            ],
         )
+        #dropdown respones
+        async def select_callback(interaction: discord.Interaction):
+            selected_option = interaction.data["values"][0]            
+            if selected_option == "常用指令":
+                embed = discord.Embed(
+                    title="常用指令",
+                    description="/help - 想了解更多有關歸終嗎？\n"
+                                "/botinfo - 獲取有關機器人的一些有用（或無用）信息\n"
+                                "/serverinfo - 獲取有關伺服器的一些有用（或無用）信息\n"
+                                "/ping - 檢查機器人是否在線\n"
+                                "/invite - 獲取機器人的邀請連結以便邀請它\n"
+                                "/server - 獲取機器人所在的 DC 伺服器的邀請連結以獲得支援\n"
+                                "/8ball - 向機器人提問\n"
+                                "/bitcoin - 獲取比特幣的當前價格",
+                    color=0x9C84EF,
+                  
+                )
+                embed.set_thumbnail(url=self.bot.user.avatar.url)
+                await interaction.response.send_message(embed=embed,ephemeral=True)
+            if selected_option == "娛樂指令":
+                embed = discord.Embed(
+                    title="娛樂指令",
+                    description="/randomfact - 獲取一個隨機事實\n"
+                                "/coinflip - 擲硬幣，但請在之前給出你的猜測\n"
+                                "/rps - 與機器人玩剪刀石頭布遊戲",
+                    color=0x9C84EF,
+                  
+                )
+                embed.set_thumbnail(url=self.bot.user.avatar.url)      
+                await interaction.response.send_message(embed=embed,ephemeral=True)      
+            if selected_option == "管理指令":
+                embed = discord.Embed(
+                    title="管理指令",
+                    description="/kick - 將使用者從伺服器踢出\n"
+                                "/nick - 更改伺服器上使用者的暱稱\n"
+                                "/ban - 將使用者從伺服器封鎖\n"
+                                "/warning - 管理伺服器上使用者的警告\n"
+                                "/purge - 刪除一定數量的訊息\n"
+                                "/hackban - 封鎖伺服器中未加入的使用者",
+                    color=0x9C84EF,
+                  
+                )
+                embed.set_thumbnail(url=self.bot.user.avatar.url)   
+                await interaction.response.send_message(embed=embed,ephemeral=True)         
+            if selected_option == "其他指令":
+                embed = discord.Embed(
+                    title="其他指令",
+                    description="/sync - 同步斜線指令\n"
+                                "/unsync - 取消同步斜線指令\n"
+                                "/load - 載入一個模組\n"
+                                "/unload - 卸載一個模組\n"
+                                "/reload - 重新載入一個模組\n"
+                                "/shutdown - 關閉機器人\n"
+                                "/say - 機器人會說出你想要的內容\n"
+                                "/embed - 機器人會以Embed形式說出你想要的內容\n"
+                                "/blacklist - 獲取所有被列入黑名單的使用者列表",
+                    color=0x9C84EF,
+                  
+                )
+                embed.set_thumbnail(url=self.bot.user.avatar.url)   
+                await interaction.response.send_message(embed=embed,ephemeral=True)   
+
+        #button
+        button = discord.ui.Button(
+        style=discord.ButtonStyle.link,
+        label="歸終的官方網站",
+            url="https://discord.gg/GfUY7ynvXN",
+        )
+        
+        #embed 圖片
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
+
+        #顯示
+        view = discord.ui.View()
+        view.add_item(dropdown)
+        view.add_item(button)
+
+        #發送
+        await context.send(embed=embed, view=view)
+        dropdown.callback = select_callback
+        view = discord.ui.View()
+        view.add_item(dropdown)
+
+
+    """
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
             commands = cog.get_commands()
@@ -43,7 +140,8 @@ class General(commands.Cog, name="general"):
                 name=i.capitalize(), value=f"```{help_text}```", inline=False
             )
         await context.send(embed=embed)
-
+    """
+    
     @commands.hybrid_command(
         name="botinfo",
         description="Get some useful (or not) information about the bot.",
