@@ -30,7 +30,11 @@ class General(commands.Cog, name="general"):
         prefix = self.bot.config["prefix"]      
         #對使用指令的使用者說嗨
         embed = discord.Embed(
-            title=(f"嗨，{context.author.display_name}!  我是歸終～ "), description="我是歸終，一個可愛的機器人!\n 我們正在努力轉移部分功能的指令到斜線指令\n 可以使用 /help 指令查看斜線的使用方法\n 使用我的服務即表示你已同意我的 隱私權聲明 及 服務條款", color=0x9C84EF)
+            title=(f"嗨，{context.author.display_name}!  我是歸終～ "),color=0x9C84EF)
+        embed.add_field(name="我們正在努力轉移部分功能的指令到斜線指令\n可以使用 /help 指令查看斜線的使用方法", value="\u200b", inline=False)
+        embed.add_field(name="使用我的服務即表示你已同意我的 隱私權聲明 及 服務條款", value="\u200b", inline=False)
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         #下拉選單 
         dropdown = discord.ui.Select(
             placeholder="請選擇",
@@ -60,6 +64,8 @@ class General(commands.Cog, name="general"):
                     color=0x9C84EF,
                   
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 embed.set_thumbnail(url=self.bot.user.avatar.url)
                 await interaction.response.send_message(embed=embed,ephemeral=True)
             if selected_option == "娛樂指令":
@@ -71,6 +77,8 @@ class General(commands.Cog, name="general"):
                     color=0x9C84EF,
                   
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 embed.set_thumbnail(url=self.bot.user.avatar.url)      
                 await interaction.response.send_message(embed=embed,ephemeral=True)      
             if selected_option == "管理指令":
@@ -85,6 +93,8 @@ class General(commands.Cog, name="general"):
                     color=0x9C84EF,
                   
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 embed.set_thumbnail(url=self.bot.user.avatar.url)   
                 await interaction.response.send_message(embed=embed,ephemeral=True)         
             if selected_option == "其他指令":
@@ -102,14 +112,28 @@ class General(commands.Cog, name="general"):
                     color=0x9C84EF,
                   
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 embed.set_thumbnail(url=self.bot.user.avatar.url)   
                 await interaction.response.send_message(embed=embed,ephemeral=True)   
 
         #button
         button = discord.ui.Button(
         style=discord.ButtonStyle.link,
-        label="歸終的官方網站",
+        label="歸終的官方Discord伺服器",
             url="https://discord.gg/GfUY7ynvXN",
+        )
+        #button2
+        button2 = discord.ui.Button(
+        style=discord.ButtonStyle.link,
+        label="歸終的官方網站",
+            url="https://www.yuhuanstudio.tech",
+        )
+        #button3
+        button3 = discord.ui.Button(
+        style=discord.ButtonStyle.link,
+        label="邀請我",
+            url="https://discord.com/api/oauth2/authorize?client_id=891988912790913024&permissions=8&scope=bot%20applications.commands",
         )
         
         #embed 圖片
@@ -119,28 +143,14 @@ class General(commands.Cog, name="general"):
         view = discord.ui.View()
         view.add_item(dropdown)
         view.add_item(button)
-
+        view.add_item(button2)
+        view.add_item(button3)
+        
         #發送
         await context.send(embed=embed, view=view)
         dropdown.callback = select_callback
         view = discord.ui.View()
         view.add_item(dropdown)
-
-
-    """
-        for i in self.bot.cogs:
-            cog = self.bot.get_cog(i.lower())
-            commands = cog.get_commands()
-            data = []
-            for command in commands:
-                description = command.description.partition("\n")[0]
-                data.append(f"{prefix}{command.name} - {description}")
-            help_text = "\n".join(data)
-            embed.add_field(
-                name=i.capitalize(), value=f"```{help_text}```", inline=False
-            )
-        await context.send(embed=embed)
-    """
 
     @commands.hybrid_command(
         name="botinfo",
