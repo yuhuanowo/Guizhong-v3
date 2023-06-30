@@ -11,7 +11,7 @@ import random
 
 import aiohttp
 import discord
-from discord import app_commands
+from discord import Guild, app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
@@ -133,7 +133,7 @@ class General(commands.Cog, name="general"):
         button3 = discord.ui.Button(
         style=discord.ButtonStyle.link,
         label="邀請我",
-            url="https://discord.com/api/oauth2/authorize?client_id=891988912790913024&permissions=8&scope=bot%20applications.commands",
+            url="https://discord.com/api/oauth2/authorize?client_id=1082152889209860247&permissions=8&scope=bot",
         )
         
         #embed 圖片
@@ -154,42 +154,46 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="botinfo",
-        description="Get some useful (or not) information about the bot.",
+        description="查看一些關於歸終的訊息.",
     )
     @checks.not_blacklisted()
     async def botinfo(self, context: Context) -> None:
         """
-        Get some useful (or not) information about the bot.
+        獲取有關機器人的一些有用（或無用）信息。
 
-        :param context: The hybrid command context.
+        :param context：混合命令上下文。
+        [text](url)
         """
         embed = discord.Embed(
-            description="Used [Krypton's](https://krypton.ninja) template",
+            description="由[YuhuanStudio](https://www.yuhuanstudio.tech)提供支援",
             color=0x9C84EF,
         )
-        embed.set_author(name="Bot Information")
-        embed.add_field(name="Owner:", value="Krypton#7331", inline=True)
+        embed.set_author(name="☆歸終～”的身分證")
+        embed.add_field(name="Owner:", value="yuhuan1125", inline=True)
         embed.add_field(
             name="Python Version:", value=f"{platform.python_version()}", inline=True
         )
+        embed.add_field(name="discord.py:", value=f"{discord.__version__}", inline=True)
         embed.add_field(
-            name="Prefix:",
+            name="前綴:",
             value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
             inline=False,
         )
-        embed.set_footer(text=f"Requested by {context.author}")
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="serverinfo",
-        description="Get some useful (or not) information about the server.",
+        description="獲取此伺服器的一些信息.",
     )
     @checks.not_blacklisted()
     async def serverinfo(self, context: Context) -> None:
         """
-        Get some useful (or not) information about the server.
+       獲取有關服務器的一些有用（或無用）信息。
 
-        :param context: The hybrid command context.
+        :param context：混合命令上下文。
         """
         roles = [role.name for role in context.guild.roles]
         if len(roles) > 50:
@@ -198,40 +202,43 @@ class General(commands.Cog, name="general"):
         roles = ", ".join(roles)
 
         embed = discord.Embed(
-            title="**Server Name:**", description=f"{context.guild}", color=0x9C84EF
+            title="**伺服器名稱:**", description=f"{context.guild}", color=0x9C84EF
         )
         if context.guild.icon is not None:
             embed.set_thumbnail(url=context.guild.icon.url)
-        embed.add_field(name="Server ID", value=context.guild.id)
-        embed.add_field(name="Member Count", value=context.guild.member_count)
+        embed.add_field(name="伺服器 ID", value=context.guild.id)
+        embed.add_field(name="成員數量", value=context.guild.member_count)
         embed.add_field(
-            name="Text/Voice Channels", value=f"{len(context.guild.channels)}"
+            name="文字/語音通道總數", value=f"{len(context.guild.channels)}"
         )
-        embed.add_field(name=f"Roles ({len(context.guild.roles)})", value=roles)
-        embed.set_footer(text=f"Created at: {context.guild.created_at}")
+        embed.add_field(name=f"身分組 ({len(context.guild.roles)})", value=roles)
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="ping",
-        description="Check if the bot is alive.",
+        description="檢查歸終是否還活著.",
     )
     @checks.not_blacklisted()
     async def ping(self, context: Context) -> None:
         """
-        Check if the bot is alive.
+        檢查機器人是否還活著。
 
-        :param context: The hybrid command context.
+        :param context：混合命令上下文。
         """
         embed = discord.Embed(
-            title="🏓 Pong!",
-            description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
-            color=0x9C84EF,
+            title="🏓 Pong!",color=0x9C84EF,
         )
+        #legacy 
+        embed.add_field(name="延遲", value=f"{round(self.bot.latency * 1000)}ms")
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="invite",
-        description="Get the invite link of the bot to be able to invite it.",
+        description="獲取歸終的邀請鏈接.",
     )
     @checks.not_blacklisted()
     async def invite(self, context: Context) -> None:
@@ -241,15 +248,30 @@ class General(commands.Cog, name="general"):
         :param context: The hybrid command context.
         """
         embed = discord.Embed(
-            description=f"Invite me by clicking [here](https://discordapp.com/oauth2/authorize?&client_id={self.bot.config['application_id']}&scope=bot+applications.commands&permissions={self.bot.config['permissions']}).",
+            description=f"[點擊我邀請](https://discordapp.com/oauth2/authorize?&client_id={self.bot.config['application_id']}&scope=bot+applications.commands&permissions={self.bot.config['permissions']}).",
             color=0xD75BF4,
         )
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
+        #button
+        button = discord.ui.Button(
+        style=discord.ButtonStyle.link,
+        label="邀請我",
+            url=f"https://discord.com/api/oauth2/authorize?client_id={self.bot.config['application_id']}&permissions={self.bot.config['permissions']}&scope=bot%20applications.commands",
+        )
+        #顯示
+        
         try:
             # To know what permissions to give to your bot, please see here: https://discordapi.com/permissions.html and remember to not give Administrator permissions.
+            view = discord.ui.View()
+            view.add_item(button)
             await context.author.send(embed=embed)
-            await context.send("I sent you a private message!")
+            await context.send("我給你發了私信!",ephemeral=True)
         except discord.Forbidden:
+            view = discord.ui.View()
+            view.add_item(button)
             await context.send(embed=embed)
+
 
     @commands.hybrid_command(
         name="server",
