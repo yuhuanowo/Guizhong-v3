@@ -12,33 +12,33 @@ from discord.ext.commands import Context
 from helpers import checks
 
 
-# Here we name the cog and create a new class for the cog.
+# 在這裡，我們命名cog並為其創建一個新類 cog.
 class Template(commands.Cog, name="template"):
     def __init__(self, bot):
         self.bot = bot
 
-    # Here you can just add your own commands, you'll always need to provide "self" as first parameter.
+    #在這裡您可以添加自己的命令，您始終需要提供"self"作為第一個參數。
 
     @commands.hybrid_command(
         name="testcommand",
-        description="This is a testing command that does nothing.",
+        description="這是一個不執行任何操作的測試命令.",
     )
-    # This will only allow non-blacklisted members to execute the command
+    # 這將只允許非黑名單成員執行該命令
     @checks.not_blacklisted()
-    # This will only allow owners of the bot to execute the command -> config.json
+    # 這將只允許機器人的所有者執行命令 -> config.json
     @checks.is_owner()
     async def testcommand(self, context: Context):
         """
-        This is a testing command that does nothing.
+        這是一個不執行任何操作的測試命令.
 
-        :param context: The application command context.
+        :param context: 應用程序命令上下文.
         """
-        # Do your stuff here
+        # 在這裡做你的事情
 
-        # Don't forget to remove "pass", I added this just because there's no content in the method.
+        # 不要忘記刪除"pass"，我添加這個只是因為方法中沒有內容.
         pass
 
 
-# And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
+# 然後我們最後將 cog 添加到機器人中，以便它可以加載、卸載、重新加載和使用其內容.
 async def setup(bot):
     await bot.add_cog(Template(bot))
