@@ -266,7 +266,7 @@ class General(commands.Cog, name="general"):
             view = discord.ui.View()
             view.add_item(button)
             await context.author.send(embed=embed)
-            await context.send("我給你發了私信!",ephemeral=True)
+            await context.send("我給你發了私訊!",ephemeral=True)
         except discord.Forbidden:
             view = discord.ui.View()
             view.add_item(button)
@@ -275,7 +275,7 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="server",
-        description="Get the invite link of the discord server of the bot for some support.",
+        description="獲取歸終的discord服務器邀請鏈接以獲得一些支持.",
     )
     @checks.not_blacklisted()
     async def server(self, context: Context) -> None:
@@ -285,21 +285,23 @@ class General(commands.Cog, name="general"):
         :param context: The hybrid command context.
         """
         embed = discord.Embed(
-            description=f"Join the support server for the bot by clicking [here](https://discord.gg/mTBrXyWxAF).",
+            description=f"[單擊加入歸終支持服務器](https://discord.com/invite/GfUY7ynvXN).",
             color=0xD75BF4,
         )
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         try:
             await context.author.send(embed=embed)
-            await context.send("I sent you a private message!")
+            await context.send("I sent you a private message!",ephemeral=True)
         except discord.Forbidden:
             await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="8ball",
-        description="Ask any question to the bot.",
+        description="向歸終詢問任何問題。",
     )
     @checks.not_blacklisted()
-    @app_commands.describe(question="The question you want to ask.")
+    @app_commands.describe(question="你想問的問題.")
     async def eight_ball(self, context: Context, *, question: str) -> None:
         """
         Ask any question to the bot.
@@ -308,38 +310,40 @@ class General(commands.Cog, name="general"):
         :param question: The question that should be asked by the user.
         """
         answers = [
-            "It is certain.",
-            "It is decidedly so.",
-            "You may rely on it.",
-            "Without a doubt.",
-            "Yes - definitely.",
-            "As I see, yes.",
-            "Most likely.",
-            "Outlook good.",
+            "可以肯定的是。",
+            "確實如此。",
+            "您可以信賴它。",
+            "毫無疑問.",
+            "當然是.",
+            "據我所知，是的.",
+            "最有可能的。",
+            "前景良好。",
             "Yes.",
-            "Signs point to yes.",
-            "Reply hazy, try again.",
-            "Ask again later.",
-            "Better not tell you now.",
-            "Cannot predict now.",
-            "Concentrate and ask again later.",
-            "Don't count on it.",
-            "My reply is no.",
-            "My sources say no.",
-            "Outlook not so good.",
-            "Very doubtful.",
+            "跡象表明是的.",
+            "回复模糊，再試一次.",
+            "稍後再詢問.",
+            "現在最好不告訴你.",
+            "現在無法預測.",
+            "集中注意力，稍後再問。",
+            "不要指望它.",
+            "我的回答是否定的。",
+            "我的消息來源說不.",
+            "前景不太好.",
+            "很可疑.",
         ]
         embed = discord.Embed(
-            title="**My Answer:**",
+            title="**我的答案:**",
             description=f"{random.choice(answers)}",
             color=0x9C84EF,
         )
-        embed.set_footer(text=f"The question was: {question}")
+        embed.timestamp = context.message.created_at
+        embed.set_footer(text=f"問題: {question}",icon_url=self.bot.user.avatar.url)
+
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="bitcoin",
-        description="Get the current price of bitcoin.",
+        description="獲取比特幣的當前價格.",
     )
     @checks.not_blacklisted()
     async def bitcoin(self, context: Context) -> None:
@@ -358,16 +362,20 @@ class General(commands.Cog, name="general"):
                         content_type="application/javascript"
                     )  # For some reason the returned content is of type JavaScript
                     embed = discord.Embed(
-                        title="Bitcoin price",
-                        description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
+                        title="比特幣價格",
+                        description=f"目前的價格是 {data['bpi']['USD']['rate']} :dollar:",
                         color=0x9C84EF,
                     )
+                    embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                    embed.timestamp = context.message.created_at
                 else:
                     embed = discord.Embed(
                         title="Error!",
-                        description="There is something wrong with the API, please try again later",
+                        description="API有問題，請稍後重試",
                         color=0xE02B2B,
                     )
+                    embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                    embed.timestamp = context.message.created_at
                 await context.send(embed=embed)
 
 
