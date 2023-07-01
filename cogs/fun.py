@@ -21,16 +21,16 @@ class Choice(discord.ui.View):
         super().__init__()
         self.value = None
 
-    @discord.ui.button(label="Heads", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="人頭", style=discord.ButtonStyle.blurple)
     async def confirm(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
-        self.value = "heads"
+        self.value = "人頭"
         self.stop()
 
-    @discord.ui.button(label="Tails", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="數字", style=discord.ButtonStyle.blurple)
     async def cancel(self, button: discord.ui.Button, interaction: discord.Interaction):
-        self.value = "tails"
+        self.value = "數字"
         self.stop()
 
 
@@ -38,17 +38,17 @@ class RockPaperScissors(discord.ui.Select):
     def __init__(self):
         options = [
             discord.SelectOption(
-                label="Scissors", description="You choose scissors.", emoji="✂"
+                label="剪刀", description="你選擇剪刀.", emoji="✂"
             ),
             discord.SelectOption(
-                label="Rock", description="You choose rock.", emoji="🪨"
+                label="石頭", description="你選擇石頭.", emoji="🪨"
             ),
             discord.SelectOption(
-                label="paper", description="You choose paper.", emoji="🧻"
+                label="布", description="你選擇布.", emoji="🧻"
             ),
         ]
         super().__init__(
-            placeholder="Choose...",
+            placeholder="選擇...",
             min_values=1,
             max_values=1,
             options=options,
@@ -56,9 +56,9 @@ class RockPaperScissors(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         choices = {
-            "rock": 0,
-            "paper": 1,
-            "scissors": 2,
+            "石頭": 0,
+            "布": 1,
+            "剪刀": 2,
         }
         user_choice = self.values[0].lower()
         user_choice_index = choices[user_choice]
@@ -70,22 +70,23 @@ class RockPaperScissors(discord.ui.Select):
         result_embed.set_author(
             name=interaction.user.name, icon_url=interaction.user.avatar.url
         )
+        result_embed.timestamp = interaction.created_at
 
         if user_choice_index == bot_choice_index:
-            result_embed.description = f"**That's a draw!**\nYou've chosen {user_choice} and I've chosen {bot_choice}."
+            result_embed.title = f"**這是平局！**\n你選擇了 {user_choice} 而我選擇了 {bot_choice}."
             result_embed.colour = 0xF59E42
         elif user_choice_index == 0 and bot_choice_index == 2:
-            result_embed.description = f"**You won!**\nYou've chosen {user_choice} and I've chosen {bot_choice}."
+            result_embed.title = f"**你贏了!**\n你選擇了 {user_choice} 而我選擇了 {bot_choice}."
             result_embed.colour = 0x9C84EF
         elif user_choice_index == 1 and bot_choice_index == 0:
-            result_embed.description = f"**You won!**\nYou've chosen {user_choice} and I've chosen {bot_choice}."
+            result_embed.title = f"**你贏了！**\n你選擇了 {user_choice} 而我選擇了 {bot_choice}."
             result_embed.colour = 0x9C84EF
         elif user_choice_index == 2 and bot_choice_index == 1:
-            result_embed.description = f"**You won!**\nYou've chosen {user_choice} and I've chosen {bot_choice}."
+            result_embed.title = f"**你贏了!**\n你選擇了 {user_choice} 而我選擇了 {bot_choice}."
             result_embed.colour = 0x9C84EF
         else:
             result_embed.description = (
-                f"**I won!**\nYou've chosen {user_choice} and I've chosen {bot_choice}."
+                f"**我贏了!**\n你選擇了 {user_choice} 而我選擇了 {bot_choice}."
             )
             result_embed.colour = 0xE02B2B
         await interaction.response.edit_message(
@@ -103,7 +104,7 @@ class Fun(commands.Cog, name="fun"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(name="randomfact", description="Get a random fact.")
+    @commands.hybrid_command(name="randomfact", description="獲得一個隨機事件。")
     @checks.not_blacklisted()
     async def randomfact(self, context: Context) -> None:
         """
@@ -118,54 +119,72 @@ class Fun(commands.Cog, name="fun"):
             ) as request:
                 if request.status == 200:
                     data = await request.json()
-                    embed = discord.Embed(description=data["text"], color=0xD75BF4)
-                else:
-                    embed = discord.Embed(
-                        title="Error!",
-                        description="There is something wrong with the API, please try again later",
-                        color=0xE02B2B,
-                    )
-                await context.send(embed=embed)
+                    #將獲取到的文字轉換成中文
+                    if data["language"] == "en":
+                        data["language"] = "zh-TW"
+                    async with session.get(
+                        f"https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl={data['language']}&dt=t&q={data['text']}"
+                    ) as request:
+                        if request.status == 200:
+                            data = await request.json()
+                            embed = discord.Embed(
+                                title=data[0][0][0], color=0xD75BF4
+                            )
+                            embed.set_footer(text="據可靠消息，上方訊息被google翻譯過",icon_url=self.bot.user.avatar.url)
+                            embed.timestamp = context.message.created_at
+                        else:
+                            embed = discord.Embed(
+                                title="Error!",
+                                description="API有問題，請稍後重試r",
+                                color=0xE02B2B,
+                            )
+                    await context.send(embed=embed) 
 
     @commands.hybrid_command(
-        name="coinflip", description="Make a coin flip, but give your bet before."
+        name="coinflip", description="拋硬幣，但盡力而為."
     )
     @checks.not_blacklisted()
     async def coinflip(self, context: Context) -> None:
         """
-        Make a coin flip, but give your bet before.
+        拋硬幣，但先下注。
 
-        :param context: The hybrid command context.
+        :param context：混合命令上下文。
         """
         buttons = Choice()
-        embed = discord.Embed(description="What is your bet?", color=0x9C84EF)
+        embed = discord.Embed(title="你賭硬幣是人頭還是數字?", color=0x9C84EF)
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         message = await context.send(embed=embed, view=buttons)
         await buttons.wait()  # We wait for the user to click a button.
-        result = random.choice(["heads", "tails"])
+        result = random.choice(["人頭", "數字"])
         if buttons.value == result:
             embed = discord.Embed(
-                description=f"Correct! You guessed `{buttons.value}` and I flipped the coin to `{result}`.",
+                title=f"正確的！你猜 `{buttons.value}` 而我拋出 `{result}`.",
                 color=0x9C84EF,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
         else:
             embed = discord.Embed(
-                description=f"Woops! You guessed `{buttons.value}` and I flipped the coin to `{result}`, better luck next time!",
+                title=f"哎呀！你猜 `{buttons.value}` 而我拋出 `{result}`, 下次好運!",
                 color=0xE02B2B,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
         await message.edit(embed=embed, view=None, content=None)
 
     @commands.hybrid_command(
-        name="rps", description="Play the rock paper scissors game against the bot."
+        name="rps", description="與歸終玩石頭剪刀布."
     )
     @checks.not_blacklisted()
     async def rock_paper_scissors(self, context: Context) -> None:
         """
-        Play the rock paper scissors game against the bot.
+        與機器人玩石頭剪刀布遊戲。
 
-        :param context: The hybrid command context.
+        :param context: 混合命令上下文.
         """
         view = RockPaperScissorsView()
-        await context.send("Please make your choice", view=view)
+        await context.send("請做出您的選擇", view=view)
 
 
 async def setup(bot):
