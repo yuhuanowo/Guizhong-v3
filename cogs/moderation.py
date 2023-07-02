@@ -20,76 +20,82 @@ class Moderation(commands.Cog, name="moderation"):
 
     @commands.hybrid_command(
         name="kick",
-        description="Kick a user out of the server.",
+        description="將成員踢出服務器.",
     )
     @commands.has_permissions(kick_members=True)
     @commands.bot_has_permissions(kick_members=True)
     @checks.not_blacklisted()
     @app_commands.describe(
-        user="The user that should be kicked.",
-        reason="The reason why the user should be kicked.",
+        user="想踢出的成員.",
+        reason="成員被踢出的原因.",
     )
     async def kick(
-        self, context: Context, user: discord.User, *, reason: str = "Not specified"
+        self, context: Context, user: discord.User, *, reason: str = "未指定"
     ) -> None:
         """
-        Kick a user out of the server.
+        將用戶踢出服務器。
 
-        :param context: The hybrid command context.
-        :param user: The user that should be kicked from the server.
-        :param reason: The reason for the kick. Default is "Not specified".
+        :param context：混合命令上下文。
+        :param user: 應從服務器踢出的用戶。
+        :param Reason: 踢球的原因。默認為“未指定".
         """
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
         if member.guild_permissions.administrator:
             embed = discord.Embed(
-                description="User has administrator permissions.", color=0xE02B2B
+                description="成員具有管理員權限.", color=0xE02B2B
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
         else:
             try:
                 embed = discord.Embed(
-                    description=f"**{member}** was kicked by **{context.author}**!",
+                    description=f"**{member}** 被 **{context.author}**踢出!",
                     color=0x9C84EF,
                 )
-                embed.add_field(name="Reason:", value=reason)
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
+                embed.add_field(name="原因:", value=reason)
                 await context.send(embed=embed)
                 try:
                     await member.send(
-                        f"You were kicked by **{context.author}** from **{context.guild.name}**!\nReason: {reason}"
+                        f"你被 **{context.author}** 踢出 **{context.guild.name}**了!\n原因n: {reason}"
                     )
                 except:
-                    # Couldn't send a message in the private messages of the user
+                    # 無法在用戶的私人消息中發送消息
                     pass
                 await member.kick(reason=reason)
             except:
                 embed = discord.Embed(
-                    description="An error occurred while trying to kick the user. Make sure my role is above the role of the user you want to kick.",
+                    description="嘗試踢成員時發生錯誤。確保我的身分組高於您要踢出的成員的身分組。",
                     color=0xE02B2B,
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="nick",
-        description="Change the nickname of a user on a server.",
+        description="更改伺服器上成員的暱稱.",
     )
     @commands.has_permissions(manage_nicknames=True)
     @commands.bot_has_permissions(manage_nicknames=True)
     @checks.not_blacklisted()
     @app_commands.describe(
-        user="The user that should have a new nickname.",
-        nickname="The new nickname that should be set.",
+        user="應該有新暱稱的成員。",
+        nickname="應設置的新暱稱.",
     )
     async def nick(
         self, context: Context, user: discord.User, *, nickname: str = None
     ) -> None:
         """
-        Change the nickname of a user on a server.
+        更改服務器上用戶的暱稱。
 
-        :param context: The hybrid command context.
-        :param user: The user that should have its nickname changed.
-        :param nickname: The new nickname of the user. Default is None, which will reset the nickname.
+        :param context：混合命令上下文。
+        :param user: 應該更改暱稱的用戶。
+        :param暱稱：用戶的新暱稱。默認為 None，這將重置暱稱.
         """
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
@@ -97,37 +103,41 @@ class Moderation(commands.Cog, name="moderation"):
         try:
             await member.edit(nick=nickname)
             embed = discord.Embed(
-                description=f"**{member}'s** new nickname is **{nickname}**!",
+                description=f"**{member}** 的新暱稱是 **{nickname}**!",
                 color=0x9C84EF,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
         except:
             embed = discord.Embed(
-                description="An error occurred while trying to change the nickname of the user. Make sure my role is above the role of the user you want to change the nickname.",
+                description="嘗試更改成員的暱稱時發生錯誤。確保我的身分組高於您要更改暱稱的成員的身分組。",
                 color=0xE02B2B,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="ban",
-        description="Bans a user from the server.",
+        description="Ban掉成員.",
     )
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     @checks.not_blacklisted()
     @app_commands.describe(
-        user="The user that should be banned.",
-        reason="The reason why the user should be banned.",
+        user="要Ban的成員.",
+        reason="他被Ban的原因.",
     )
     async def ban(
-        self, context: Context, user: discord.User, *, reason: str = "Not specified"
+        self, context: Context, user: discord.User, *, reason: str = "未指定"
     ) -> None:
         """
-        Bans a user from the server.
+        禁止用戶訪問服務器。
 
-        :param context: The hybrid command context.
-        :param user: The user that should be banned from the server.
-        :param reason: The reason for the ban. Default is "Not specified".
+        :param context：混合命令上下文。
+        :param user: 應該被禁止訪問服務器的用戶。
+        :param Reason: 禁止的原因。默認為“未指定".
         """
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
@@ -135,70 +145,78 @@ class Moderation(commands.Cog, name="moderation"):
         try:
             if member.guild_permissions.administrator:
                 embed = discord.Embed(
-                    description="User has administrator permissions.", color=0xE02B2B
+                    description="成員具有管理員權限", color=0xE02B2B
                 )
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
                 await context.send(embed=embed)
             else:
                 embed = discord.Embed(
-                    description=f"**{member}** was banned by **{context.author}**!",
+                    description=f"**{member}** 被 **{context.author}**Ban了!",
                     color=0x9C84EF,
                 )
-                embed.add_field(name="Reason:", value=reason)
+                embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+                embed.timestamp = context.message.created_at
+                embed.add_field(name="原因:", value=reason)
                 await context.send(embed=embed)
                 try:
                     await member.send(
-                        f"You were banned by **{context.author}** from **{context.guild.name}**!\nReason: {reason}"
+                        f"你被 **{context.author}** 在 **{context.guild.name}**Ban了!\n原因: {reason}"
                     )
                 except:
-                    # Couldn't send a message in the private messages of the user
+                    # 無法在用戶的私人消息中發送消息
                     pass
                 await member.ban(reason=reason)
         except:
             embed = discord.Embed(
                 title="Error!",
-                description="An error occurred while trying to ban the user. Make sure my role is above the role of the user you want to ban.",
+                description="嘗試更改成員的暱稱時發生錯誤。確保我的身分組高於您要更改暱稱的成員的身分組.",
                 color=0xE02B2B,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
 
     @commands.hybrid_group(
         name="warning",
-        description="Manage warnings of a user on a server.",
+        description="管理伺服器上成員的警告.",
     )
     @commands.has_permissions(manage_messages=True)
     @checks.not_blacklisted()
     async def warning(self, context: Context) -> None:
         """
-        Manage warnings of a user on a server.
+        管理服務器上用戶的警告。
 
-        :param context: The hybrid command context.
+        :param context: 混合命令上下文.
         """
         if context.invoked_subcommand is None:
             embed = discord.Embed(
-                description="Please specify a subcommand.\n\n**Subcommands:**\n`add` - Add a warning to a user.\n`remove` - Remove a warning from a user.\n`list` - List all warnings of a user.",
+                description="請指定子命令.\n\n**子命令s:**\n`add` - 向用戶添加警告.\n`remove` - 刪除用戶的警告.\n`list` - 列出用戶的所有警告.",
                 color=0xE02B2B,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
 
     @warning.command(
         name="add",
-        description="Adds a warning to a user in the server.",
+        description="向伺服器中的成員添加警告.",
     )
     @checks.not_blacklisted()
     @commands.has_permissions(manage_messages=True)
     @app_commands.describe(
-        user="The user that should be warned.",
-        reason="The reason why the user should be warned.",
+        user="應該被警告的用戶.",
+        reason="警告的原因.",
     )
     async def warning_add(
-        self, context: Context, user: discord.User, *, reason: str = "Not specified"
+        self, context: Context, user: discord.User, *, reason: str = "未指定"
     ) -> None:
         """
-        Warns a user in his private messages.
+        在用戶的私人消息中警告用戶。
 
-        :param context: The hybrid command context.
-        :param user: The user that should be warned.
-        :param reason: The reason for the warn. Default is "Not specified".
+        :param context：混合命令上下文。
+        :param user: 應該被警告的用戶。
+        :param Reason: 警告的原因。默認為“未指定”.
         """
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
@@ -207,121 +225,129 @@ class Moderation(commands.Cog, name="moderation"):
             user.id, context.guild.id, context.author.id, reason
         )
         embed = discord.Embed(
-            description=f"**{member}** was warned by **{context.author}**!\nTotal warns for this user: {total}",
+            description=f"**{member}** 被 **{context.author}**警告!\n該用戶的警告總數： {total}",
             color=0x9C84EF,
         )
-        embed.add_field(name="Reason:", value=reason)
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
+        embed.add_field(name="原因:", value=reason)
         await context.send(embed=embed)
         try:
             await member.send(
-                f"You were warned by **{context.author}** in **{context.guild.name}**!\nReason: {reason}"
+                f"您被 **{context.author}** 在 **{context.guild.name}**中警告!\n原因： {reason}"
             )
         except:
-            # Couldn't send a message in the private messages of the user
+            # 無法在用戶的私人消息中發送消息
             await context.send(
-                f"{member.mention}, you were warned by **{context.author}**!\nReason: {reason}"
+                f"{member.mention}, 你被 **{context.author}**警告!\n原因: {reason}"
             )
 
     @warning.command(
         name="remove",
-        description="Removes a warning from a user in the server.",
+        description="刪除伺服器中成員的警告.",
     )
     @checks.not_blacklisted()
     @commands.has_permissions(manage_messages=True)
     @app_commands.describe(
-        user="The user that should get their warning removed.",
-        warn_id="The ID of the warning that should be removed.",
+        user="應該刪除警告的用戶.",
+        warn_id="應刪除的警告 ID.",
     )
     async def warning_remove(
         self, context: Context, user: discord.User, warn_id: int
     ) -> None:
         """
-        Warns a user in his private messages.
+       在用戶的私人消息中警告用戶。
 
-        :param context: The hybrid command context.
-        :param user: The user that should get their warning removed.
-        :param warn_id: The ID of the warning that should be removed.
+        :param context：混合命令上下文。
+        :param user：應該刪除警告的用戶。
+        :param warn_id: 應刪除的警告的 ID。
         """
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(
             user.id
         )
         total = await db_manager.remove_warn(warn_id, user.id, context.guild.id)
         embed = discord.Embed(
-            description=f"I've removed the warning **#{warn_id}** from **{member}**!\nTotal warns for this user: {total}",
+            description=f"我已經刪除了警告 **#{warn_id}** 從 **{member}**!\n該用戶的警告總數: {total}",
             color=0x9C84EF,
         )
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         await context.send(embed=embed)
 
     @warning.command(
         name="list",
-        description="Shows the warnings of a user in the server.",
+        description="顯示伺服器中成員的警告.",
     )
     @commands.has_guild_permissions(manage_messages=True)
     @checks.not_blacklisted()
-    @app_commands.describe(user="The user you want to get the warnings of.")
+    @app_commands.describe(user="您想要收到警告的成員.")
     async def warning_list(self, context: Context, user: discord.User):
         """
-        Shows the warnings of a user in the server.
+        顯示服務器中用戶的警告。
 
-        :param context: The hybrid command context.
+        :param context：混合命令上下文。
         :param user: The user you want to get the warnings of.
         """
         warnings_list = await db_manager.get_warnings(user.id, context.guild.id)
-        embed = discord.Embed(title=f"Warnings of {user}", color=0x9C84EF)
+        embed = discord.Embed(title=f"{user}的警告", color=0x9C84EF)
         description = ""
         if len(warnings_list) == 0:
-            description = "This user has no warnings."
+            description = "該成員沒有任何警告."
         else:
             for warning in warnings_list:
-                description += f"• Warned by <@{warning[2]}>: **{warning[3]}** (<t:{warning[4]}>) - Warn ID #{warning[5]}\n"
+                description += f"• 警告者 <@{warning[2]}>: **{warning[3]}** (<t:{warning[4]}>) - 警告ID #{warning[5]}\n"
         embed.description = description
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="purge",
-        description="Delete a number of messages.",
+        description="刪除消息.",
     )
     @commands.has_guild_permissions(manage_messages=True)
     @commands.bot_has_permissions(manage_messages=True)
     @checks.not_blacklisted()
-    @app_commands.describe(amount="The amount of messages that should be deleted.")
+    @app_commands.describe(amount="想刪除的訊息數量.")
     async def purge(self, context: Context, amount: int) -> None:
         """
-        Delete a number of messages.
+        刪除多條消息。
 
-        :param context: The hybrid command context.
-        :param amount: The number of messages that should be deleted.
+        :param context：混合命令上下文。
+        :param amount: 應刪除的消息數。
         """
         await context.send(
-            "Deleting messages..."
-        )  # Bit of a hacky way to make sure the bot responds to the interaction and doens't get a "Unknown Interaction" response
+            "正在刪除消息..."
+        )  #確保機器人響應交互並且不會得到“未知交互”響應的有點古怪的方法
         purged_messages = await context.channel.purge(limit=amount + 1)
         embed = discord.Embed(
-            description=f"**{context.author}** cleared **{len(purged_messages)-1}** messages!",
+            description=f"**{context.author}** 已清除 **{len(purged_messages)-1}** 條訊息!",
             color=0x9C84EF,
         )
+        embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+        embed.timestamp = context.message.created_at
         await context.channel.send(embed=embed)
 
     @commands.hybrid_command(
         name="hackban",
-        description="Bans a user without the user having to be in the server.",
+        description="禁止用戶而無需該用戶位於服務器中.",
     )
     @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     @checks.not_blacklisted()
     @app_commands.describe(
-        user_id="The user ID that should be banned.",
-        reason="The reason why the user should be banned.",
+        user_id="應該被Ban的用戶的 ID.",
+        reason="他被Ban的原因.",
     )
     async def hackban(
-        self, context: Context, user_id: str, *, reason: str = "Not specified"
+        self, context: Context, user_id: str, *, reason: str = "未指定"
     ) -> None:
         """
-        Bans a user without the user having to be in the server.
+        禁止用戶，而無需該用戶位於服務器中。
 
-        :param context: The hybrid command context.
-        :param user_id: The ID of the user that should be banned.
-        :param reason: The reason for the ban. Default is "Not specified".
+        :param context：混合命令上下文。
+        :param user_id: 應該被禁止的用戶的ID。
+        :param Reason: 禁止的原因。默認為“未指定”.
         """
         try:
             await self.bot.http.ban(user_id, context.guild.id, reason=reason)
@@ -329,16 +355,20 @@ class Moderation(commands.Cog, name="moderation"):
                 int(user_id)
             )
             embed = discord.Embed(
-                description=f"**{user}** (ID: {user_id}) was banned by **{context.author}**!",
+                description=f"**{user}** (ID: {user_id}) 被 **{context.author}**Ban!",
                 color=0x9C84EF,
             )
-            embed.add_field(name="Reason:", value=reason)
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
+            embed.add_field(name="原因:", value=reason)
             await context.send(embed=embed)
         except Exception as e:
             embed = discord.Embed(
-                description="An error occurred while trying to ban the user. Make sure ID is an existing ID that belongs to a user.",
+                description="嘗試禁止成員時發生錯誤。確保 ID 是屬於成員的現有 ID.",
                 color=0xE02B2B,
             )
+            embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
+            embed.timestamp = context.message.created_at
             await context.send(embed=embed)
 
 
