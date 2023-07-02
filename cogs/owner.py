@@ -26,10 +26,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def sync(self, context: Context, scope: str) -> None:
         """
-        Synchonizes the slash commands.
+        同步斜杠命令。
 
-        :param context: The command context.
-        :param scope: The scope of the sync. Can be `global` or `guild`.
+        :param context: 命令上下文。
+        :param range: 同步的範圍。可以是“全局”或“行會”。
         """
 
         if scope == "global":
@@ -70,10 +70,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def unsync(self, context: Context, scope: str) -> None:
         """
-        Unsynchonizes the slash commands.
+        取消同步斜杠命令。
 
-        :param context: The command context.
-        :param scope: The scope of the sync. Can be `global`, `current_guild` or `guild`.
+        :param context: 命令上下文。
+        :param range: 同步的範圍。可以是“global”、“current_guild”或“guild”.
         """
 
         if scope == "global":
@@ -113,10 +113,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def load(self, context: Context, cog: str) -> None:
         """
-        The bot will load the given cog.
+        機器人將加載給定的齒輪。
 
-        :param context: The hybrid command context.
-        :param cog: The name of the cog to load.
+        :param context：混合命令上下文。
+        :param cog: 要加載的 cog 的名稱.
         """
         try:
             await self.bot.load_extension(f"cogs.{cog}")
@@ -143,10 +143,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def unload(self, context: Context, cog: str) -> None:
         """
-        The bot will unload the given cog.
+        機器人將卸載給定的齒輪。
 
-        :param context: The hybrid command context.
-        :param cog: The name of the cog to unload.
+        :param context：混合命令上下文。
+        :param cog: 要卸載的 cog 的名稱.
         """
         try:
             await self.bot.unload_extension(f"cogs.{cog}")
@@ -173,10 +173,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def reload(self, context: Context, cog: str) -> None:
         """
-        The bot will reload the given cog.
+        機器人將重新加載給定的齒輪。
 
-        :param context: The hybrid command context.
-        :param cog: The name of the cog to reload.
+        :param context：混合命令上下文。
+        :param cog: 要重新加載的 cog 的名稱。
         """
         try:
             await self.bot.reload_extension(f"cogs.{cog}")
@@ -202,9 +202,9 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def shutdown(self, context: Context) -> None:
         """
-        Shuts down the bot.
+       關閉機器人。
 
-        :param context: The hybrid command context.
+        :param context: 混合命令上下文.
         """
         embed = discord.Embed(description="正在關閉.... 再見! :wave:", color=0x9C84EF)
         embed.set_footer(text="可愛的歸終~",icon_url=self.bot.user.avatar.url)
@@ -220,10 +220,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def say(self, context: Context, *, message: str) -> None:
         """
-        The bot will say anything you want.
+        機器人會說你想說的任何話。
 
-        :param context: The hybrid command context.
-        :param message: The message that should be repeated by the bot.
+        :param context：混合命令上下文。
+        :param message: 機器人應該重複的消息。
         """
         await context.send(message)
 
@@ -235,10 +235,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def embed(self, context: Context, *, message: str) -> None:
         """
-        The bot will say anything you want, but using embeds.
+       機器人會說你想說的任何話，但使用嵌入。
 
-        :param context: The hybrid command context.
-        :param message: The message that should be repeated by the bot.
+        :param context：混合命令上下文。
+        :param message: 機器人應該重複的消息。
         """
         embed = discord.Embed(description=message, color=0x9C84EF)
         await context.send(embed=embed)
@@ -250,9 +250,9 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def blacklist(self, context: Context) -> None:
         """
-        Lets you add or remove a user from not being able to use the bot.
+        允許您添加或刪除無法使用機器人的用戶。
 
-        :param context: The hybrid command context.
+        :param context: 混合命令上下文.
         """
         if context.invoked_subcommand is None:
             embed = discord.Embed(
@@ -271,9 +271,9 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def blacklist_show(self, context: Context) -> None:
         """
-        Shows the list of all blacklisted users.
+        顯示所有列入黑名單的用戶的列表。
 
-        :param context: The hybrid command context.
+        :param context: 混合命令上下文.
         """
         blacklisted_users = await db_manager.get_blacklisted_users()
         if len(blacklisted_users) == 0:
@@ -306,10 +306,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def blacklist_add(self, context: Context, user: discord.User) -> None:
         """
-        Lets you add a user from not being able to use the bot.
+        允許您添加無法使用機器人的用戶。
 
-        :param context: The hybrid command context.
-        :param user: The user that should be added to the blacklist.
+        :param context：混合命令上下文。
+        :param user: 需要添加到黑名單的用戶.
         """
         user_id = user.id
         if await db_manager.is_blacklisted(user_id):
@@ -339,10 +339,10 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def blacklist_remove(self, context: Context, user: discord.User) -> None:
         """
-        Lets you remove a user from not being able to use the bot.
+        允許您刪除無法使用機器人的用戶。
 
-        :param context: The hybrid command context.
-        :param user: The user that should be removed from the blacklist.
+        :param context：混合命令上下文。
+        :param user: 需要從黑名單中刪除的用戶.
         """
         user_id = user.id
         if not await db_manager.is_blacklisted(user_id):
