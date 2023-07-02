@@ -7,24 +7,24 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**描述 bug(described bug)**
+對錯誤內容的清晰簡潔的描述。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Given the following code ...
-2. Using the following command '...'
-3. Given the following arguments '...'
-4. See error
+**重現該行為的步驟(Steps to reproduce)**
+重現該行為的步驟：
+1. 給出以下代碼 ...
+2. 使用以下命令 '...'
+3. 鑑於以下論點 '...'
+4. 看到錯誤
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**預期行為(Expected behavior)**
+對您期望發生的情況的清晰簡潔的描述。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**截圖(Screenshots)**
+如果適用，請添加屏幕截圖以幫助解釋您的問題。
 
-**Template Version**
-The version of the template that you are using.
+**使用版本(the vision used)**
+您正在使用的機器人的版本。
 
-**Additional context**
-Add any other context about the problem here.
+**額外的信息(Additional context)**
+在此處添加有關該問題的任何其他上下文。
