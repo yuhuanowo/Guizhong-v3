@@ -1,132 +1,130 @@
-# Python Discord Bot Template
+![cover](https://www.yuhuanstudio.tech/github.png)
 
+------------------------------------
 <p align="center">
-  <a href="https://discord.gg/GfUY7ynvXN"><img src="https://img.shields.io/discord/606104244101185558?logo=discord"></a>
-  <a href="https://github.com/kkrypt0nn/Python-Discord-Bot-Template/releases"><img src="https://img.shields.io/github/v/release/kkrypt0nn/Python-Discord-Bot-Template"></a>
-  <a href="https://github.com/kkrypt0nn/Python-Discord-Bot-Template/commits/main"><img src="https://img.shields.io/github/last-commit/kkrypt0nn/Python-Discord-Bot-Template"></a>
-  <a href="https://github.com/kkrypt0nn/Python-Discord-Bot-Template/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/kkrypt0nn/Python-Discord-Bot-Template"></a>
-  <a href="https://github.com/kkrypt0nn/Python-Discord-Bot-Template"><img src="https://img.shields.io/github/languages/code-size/kkrypt0nn/Python-Discord-Bot-Template"></a>
-  <a href="https://conventionalcommits.org/en/v1.0.0/"><img src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white"></a>
-  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+  <h2 align="center">歸終</h2>
+  <p align="center">
+    一個基於discord.py的discord機器人
+    <br/>
+    <br/>
+    <a href="https://docs.yuhuanstudio.tech"><strong>» 查看使用教程 »</strong></a>
+    <br/>
+  </p>
 </p>
 
-This repository is a template that everyone can use for the start of their discord bot.
+<p align="center">
 
-When I first started creating my discord bot it took me a while to get everything setup and working with cogs and more.
-I would've been happy if there were any template existing. However, there wasn't any existing template. That's why I
-decided to create my own template to let <b>you</b> guys create your discord bot easily.
+<a href="https://discord.gg/GfUY7ynvXN"><img src="https://img.shields.io/discord/606104244101185558?color=E2CDBC&amp;logo=discord&amp;style=for-the-badge" alt="Discord"></a>
+<a href="https://github.com/yuhuanowo/Guizhong-v3/stargazers"><img src="https://img.shields.io/github/stars/yuhuanowo/Guizhong-v3?color=E2CDBC&amp;logo=github&amp;style=for-the-badge" alt="Github stars"></a>
+<a href="https://github.com/yuhuanowo/Guizhong-v3/releases" alt="GitHub release"><img src="https://img.shields.io/github/v/release/yuhuanowo/Guizhong-v3?color=E2CDBC&amp;logo=github&amp;style=for-the-badge"></a>
+<a href="https://github.com/yuhuanowo/Guizhong-v3"><img src="https://img.shields.io/github/languages/code-size/yuhuanowo/Guizhong-v3?color=E2CDBC&amp;logo=github&amp;style=for-the-badge" alt="GitHub code size in bytes"></a>
+<a href="./LICENSE"><img src="https://img.shields.io/github/license/lss233/chatgpt-mirai-qq-bot?&amp;color=E2CDBC&amp;style=for-the-badge" alt="License"></a>
+</p>
 
-Please note that this template is not supposed to be the best template, but a good template to start learning how
-discord.py works and to make your own bot easily.
+***
 
-If you plan to use this template to make your own template or bot, you **have to**:
+* [Discord ](https://discord.gg/GfUY7ynvXN)
+* [官方網站](https://www.yuhuanstudio.tech)
 
-- Keep the credits, and a link to this repository in all the files that contains my code
-- Keep the same license for unchanged code
+發布最新的項目動態、視頻教程、問題答疑和交流。
 
-See [the license file](https://github.com/kkrypt0nn/Python-Discord-Bot-Template/blob/master/LICENSE.md) for more
-information, I reserve the right to take down any repository that does not meet these requirements.
+如果不能解決，把遇到的問題、**日誌**和配置文件準備好後再提問。
 
-## Support
+| ![幫助指令](https://img.shields.io/badge/-幫助指令-E2CDBC?style=for-the-badge)                     | ![待開發..](https://img.shields.io/badge/-待開發..-E2CDBC?style=for-the-badge)                   | ![待開發...](https://img.shields.io/badge/-待開發...-E2CDBC?style=for-the-badge)            |
+|------------------------------|------------------------------|------------------------------|
+| ![image]() | ![image]() | ![image]() |
 
-Before requesting support, you should know that this template requires you to have at least a **basic knowledge** of
-Python and the library is made for advanced users. Do not use this template if you don't know the
-basics. [Here's](https://pythondiscord.com/pages/resources) a link for resources to learn python.
 
-If you need some help for something, do not hesitate to join my discord server [here](https://discord.gg/mTBrXyWxAF).
 
-All the updates of the template are available [here](UPDATES.md).
 
-## Disclaimer
+**⚡ 功能**   
+* [x] 幫助指令
+* [x] 機器人狀態
+* [x] 機器人邀請
+* [x] 伺服器邀請
+* [x] 伺服器資訊
+* [x] 伺服器成員
+* [x] 一句沒用的話
 
-Slash commands can take some time to get registered globally, so if you want to test a command you should use
-the `@app_commands.guilds()` decorator so that it gets registered instantly. Example:
+**📝 待開發**
+* [ ] 音樂功能
 
-```py
-@commands.hybrid_command(
-  name="command",
-  description="Command description",
-)
-@app_commands.guilds(discord.Object(id=GUILD_ID)) # Place your guild ID here
-```
+## 🐎 命令
 
-When using the template you confirm that you have read the [license](LICENSE.md) and comprehend that I can take down
-your repository if you do not meet these requirements.
+**你可以在 [Wiki](https://docs.yuhuanstudio.tech) 了解机器人的内部命令。**  
 
-Please do not open issues or pull requests about things that are written in the [TODO file](TODO.md), they are **already** under work for a future version of the template.
 
-## How to download it
+## 🔧 搭建
 
-This repository is now a template, on the top left you can simply click on "**Use this template**" to create a GitHub
-repository based on this template.
+此存儲庫現在是一個機器人
 
-Alternatively you can do the following:
+您可以執行以下操作：
 
-* Clone/Download the repository
-    * To clone it and get the updates you can definitely use the command
+* 克隆/下載存儲庫y
+    * 要克隆它並獲取更新，您絕對可以使用以下命令
       `git clone`
-* Create a discord bot [here](https://discord.com/developers/applications)
-* Get your bot token
-* Invite your bot on servers using the following invite:
+* 創建一個discord機器人 [here](https://discord.com/developers/applications)
+* 獲取您的機器人令牌
+* 使用以下邀請在服務器上邀請您的機器人:
   https://discord.com/oauth2/authorize?&client_id=YOUR_APPLICATION_ID_HERE&scope=bot+applications.commands&permissions=PERMISSIONS (
-  Replace `YOUR_APPLICATION_ID_HERE` with the application ID and replace `PERMISSIONS` with the required permissions
-  your bot needs that it can be get at the bottom of a this
+  替代 `YOUR_APPLICATION_ID_HERE` 與應用程序 ID 並替換 `PERMISSIONS` 具有所需的權限
+你的機器人需要它能夠找到這個的底部
   page https://discord.com/developers/applications/YOUR_APPLICATION_ID_HERE/bot)
 
-## How to set up
+## 如何設置
 
-To set up the bot I made it as simple as possible. I now created a [config.json](config.json) file where you can put the
-needed things to edit.
+為了設置機器人，我讓它盡可能簡單。我現在創建了一個[config.json](config.json) 您可以在其中放置需要編輯的內容的文件.
 
-Here is an explanation of what everything is:
+這是對一切的解釋：
 
-| Variable                  | What it is                                                            |
+| 變數                      | 這是什麼                                                              |
 | ------------------------- | ----------------------------------------------------------------------|
-| YOUR_BOT_PREFIX_HERE      | The prefix you want to use for normal commands                        |
-| YOUR_BOT_TOKEN_HERE       | The token of your bot                                                 |
-| YOUR_BOT_PERMISSIONS_HERE | The permissions integer your bot needs when it gets invited           |
-| YOUR_APPLICATION_ID_HERE  | The application ID of your bot                                        |
-| OWNERS                    | The user ID of all the bot owners                                     |
+| YOUR_BOT_PREFIX_HERE      | 您要用於普通命令的前綴                                                |
+| YOUR_BOT_TOKEN_HERE       | 您的機器人的令牌                                                      |
+| YOUR_BOT_PERMISSIONS_HERE | 您的機器人受到邀請時所需的權限整數                                     | 
+| YOUR_APPLICATION_ID_HERE  | 您的機器人的應用程序 ID                                                |
+| OWNERS                    | 所有機器人所有者的用戶 ID                                              |
 
 
-## How to start
+## 如何開始
 
-To start the bot you simply need to launch, either your terminal (Linux, Mac & Windows), or your Command Prompt (
-Windows)
+要啟動機器人，您只需啟動終端（Linux、Mac 和 Windows）或命令提示符（windows）
 .
 
-Before running the bot you will need to install all the requirements with this command:
+在運行機器人之前，您需要使用以下命令安裝所有要求：
 
 ```
 python -m pip install -r requirements.txt
 ```
 
-After that you can start it with
+之後你可以開始它
 
 ```
 python bot.py
 ```
 
-> **Note** You may need to replace `python` with `py`, `python3`, `python3.11`, etc. depending on what Python versions you have installed on the machine.
+> **注意**您可能需要將 `python` 替換為 `py`、`python3`、`python3.11` 等，具體取決於您在計算機上安裝的 Python 版本。
 
-## Issues or Questions
+## 🎈 相關項目
 
-If you have any issues or questions of how to code a specific command, you can:
+如果你自己也有做機器人的想法，可以看看下面這些項目：
+- [kkrypt0nn](https://github.com/kkrypt0nn/Python-Discord-Bot-Template) - 一個優秀的機器人模板
 
-* Join my discord server [here](https://discord.gg/mTBrXyWxAF)
-* Post them [here](https://github.com/kkrypt0nn/Python-Discord-Bot-Template/issues)
+本項目基於以上項目開發，所以你可以給他們也點個 star ！
 
-Me or other people will take their time to answer and help you.
+## 🛠 貢獻者名單   
 
-## Versioning
+歡迎提出新的點子、 Pull Request。
 
-We use [SemVer](http://semver.org) for versioning. For the versions available, see
-the [tags on this repository](https://github.com/kkrypt0nn/Python-Discord-Bot-Template/tags).
+<a href="https://github.com/yuhuanowo/Guizhong-v3/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yuhuanowo/Guizhong-v3" />
+</a>
 
-## Built With
+## 💪 支持我们
 
-* [Python 3.9.12](https://www.python.org/)
+如果我們這個項目對你有所幫助，請給我們一顆 ⭐️3
 
-## License
+## 📝 執照
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
+該項目已獲得 Apache License 2.0 許可 -有關詳細信息，請參閱 [LICENSE.md](LICENSE.md) 文件
+
