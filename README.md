@@ -1,4 +1,4 @@
-![cover](https://www.yuhuanstudio.tech/github.png)
+![cover](https://github.com/yuhuanowo/Guizhong-v3/blob/main/github.png)
 
 ------------------------------------
 <p align="center">
