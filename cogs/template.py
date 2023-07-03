@@ -1,9 +1,9 @@
 """"
-Copyright © Krypton 2019-2023 - https://github.com/kkrypt0nn (https://krypton.ninja)
-Description:
-🐍 A simple template to start to code your own and personalized discord bot in Python programming language.
+Copyright © YuhuanStudio 2022-2023 - https://github.com/yuhuanowo (https://www.yuhuanstudio.tech)
+描述:
+🐍 一個可愛的機器人，用於幫助你的 Discord 伺服器。
 
-Version: 5.5.0
+Version: 0.0.1(beta)
 """
 
 from discord.ext import commands
